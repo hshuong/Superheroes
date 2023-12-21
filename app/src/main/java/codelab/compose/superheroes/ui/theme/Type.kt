@@ -35,17 +35,7 @@ val Typography = Typography(
     displaySmall = TextStyle(
         fontFamily = Cabin,
         fontWeight = FontWeight.Bold,
-        fontSize = 16.sp
-    ),
-    headlineLarge = TextStyle(
-        fontFamily = Cabin,
-        fontWeight = FontWeight.Bold,
-        fontSize = 18.sp
-    ),
-    headlineSmall = TextStyle(
-        fontFamily = Cabin,
-        fontWeight = FontWeight.Bold,
-        fontSize = 16.sp
+        fontSize = 20.sp
     )
     /* Other default text styles to override
     titleLarge = TextStyle(

@@ -1,5 +1,6 @@
 package codelab.compose.superheroes
 
+import android.content.res.Configuration
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
@@ -27,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import codelab.compose.superheroes.model.Hero
 import codelab.compose.superheroes.model.HeroesRepository.heroes
+import codelab.compose.superheroes.ui.theme.SuperheroesTheme
 
 @Composable
 fun HeroesMainScreen() {
@@ -47,11 +50,11 @@ fun HeroesMainScreen() {
         }
     }
 }
-@Preview()
-@Composable
-fun ListPreview() {
-    HeroesMainScreen()
-}
+//@Preview()
+//@Composable
+//fun ListPreview() {
+//    HeroesMainScreen()
+//}
 
 @Composable
 fun HeroItem(
@@ -68,12 +71,15 @@ fun HeroItem(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(dimensionResource(id = R.dimen.padding_medium))
+                //.sizeIn(minHeight = 16.dp)
         ) {
 
             HeroInformation(
                 heroName = hero.nameRes,
                 heroDescription = hero.descriptionRes,
-                modifier = Modifier.padding(end = dimensionResource(R.dimen.padding_small))
+                modifier = Modifier
+                    .weight(1f)
+                        .padding(end = dimensionResource(R.dimen.padding_small))
             )
             //Spacer()
             HeroImage(heroImage = hero.imageRes)
@@ -89,7 +95,7 @@ fun HeroInformation(
     Column(modifier = modifier){
         Text(
             text = stringResource(heroName),
-            style = MaterialTheme.typography.headlineSmall
+            style = MaterialTheme.typography.displaySmall
         )
         Text(
             text = stringResource(heroDescription),
@@ -107,20 +113,29 @@ fun HeroImage(
             .size(dimensionResource(id = R.dimen.image_size))
             //.padding(dimensionResource(id = R.dimen.padding_small))
             .clip(MaterialTheme.shapes.small),
-        contentScale = ContentScale.Crop,
+        contentScale = ContentScale.FillWidth,
         painter = painterResource(heroImage),
         contentDescription = null
     )
 }
 
-@Preview()
+
+
+
+@Preview("Light Theme")
+@Preview("Dark Theme", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun HeroCardPreview() {
-    HeroItem(
-        Hero(
-            R.string.hero1,
-            R.string.description1,
-            R.drawable.android_superhero1
+    SuperheroesTheme(
+        dynamicColor = false
+    ) {
+        HeroItem(
+            Hero(
+                R.string.hero1,
+                R.string.description1,
+                R.drawable.android_superhero1
+            )
         )
-    )
+    }
+
 }
