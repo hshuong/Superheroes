@@ -30,12 +30,12 @@ val Typography = Typography(
     displayMedium = TextStyle(
         fontFamily = Cabin,
         fontWeight = FontWeight.Bold,
-        fontSize = 20.sp
+        fontSize = 28.sp
     ),
     displaySmall = TextStyle(
         fontFamily = Cabin,
         fontWeight = FontWeight.Bold,
-        fontSize = 20.sp
+        fontSize = 24.sp
     )
     /* Other default text styles to override
     titleLarge = TextStyle(

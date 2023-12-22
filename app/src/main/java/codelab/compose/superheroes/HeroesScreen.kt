@@ -1,17 +1,20 @@
 package codelab.compose.superheroes
 
 import android.content.res.Configuration
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
@@ -32,8 +35,13 @@ import codelab.compose.superheroes.model.HeroesRepository.heroes
 import codelab.compose.superheroes.ui.theme.SuperheroesTheme
 
 @Composable
-fun HeroesMainScreen() {
+fun HeroesMainScreen(
+    heroes: List<Hero>,
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(0.dp)
+) {
     LazyColumn(
+        contentPadding = contentPadding,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         items(heroes) {
@@ -50,11 +58,16 @@ fun HeroesMainScreen() {
         }
     }
 }
-//@Preview()
-//@Composable
-//fun ListPreview() {
-//    HeroesMainScreen()
-//}
+@Preview()
+@Composable
+fun ListPreview() {
+    SuperheroesTheme(
+        dynamicColor = false
+    ) {
+        HeroesMainScreen(heroes = heroes)
+    }
+
+}
 
 @Composable
 fun HeroItem(
@@ -63,7 +76,7 @@ fun HeroItem(
 ) {
     Card(
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp
+            defaultElevation = 2.dp
         ),
         modifier = modifier
     ) {
@@ -71,57 +84,35 @@ fun HeroItem(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(dimensionResource(id = R.dimen.padding_medium))
-                //.sizeIn(minHeight = 16.dp)
+                .sizeIn(minHeight = dimensionResource(id = R.dimen.image_size))
         ) {
 
-            HeroInformation(
-                heroName = hero.nameRes,
-                heroDescription = hero.descriptionRes,
-                modifier = Modifier
-                    .weight(1f)
-                        .padding(end = dimensionResource(R.dimen.padding_small))
-            )
-            //Spacer()
-            HeroImage(heroImage = hero.imageRes)
+            Column(modifier = Modifier.weight(1f)){
+                Text(
+                    text = stringResource(hero.nameRes),
+                    style = MaterialTheme.typography.displaySmall
+                )
+                Text(
+                    text = stringResource(hero.descriptionRes),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
+            Spacer(Modifier.width(dimensionResource(id = R.dimen.padding_medium)))
+            Box(modifier = Modifier
+                .size(72.dp)
+                .clip(RoundedCornerShape(dimensionResource(id = R.dimen.padding_small)))
+            ) {
+                Image(
+                    contentScale = ContentScale.FillWidth,
+                    painter = painterResource(hero.imageRes),
+                    contentDescription = null,
+                    alignment = Alignment.TopCenter
+                )
+            }
+
         }
     }
 }
-@Composable
-fun HeroInformation(
-    @StringRes heroName: Int,
-    @StringRes heroDescription: Int,
-    modifier: Modifier = Modifier
-) {
-    Column(modifier = modifier){
-        Text(
-            text = stringResource(heroName),
-            style = MaterialTheme.typography.displaySmall
-        )
-        Text(
-            text = stringResource(heroDescription),
-            style = MaterialTheme.typography.bodyLarge
-        )
-    }
-}
-@Composable
-fun HeroImage(
-    @DrawableRes heroImage: Int,
-    modifier: Modifier = Modifier
-) {
-    Image(
-        modifier = modifier
-            .size(dimensionResource(id = R.dimen.image_size))
-            //.padding(dimensionResource(id = R.dimen.padding_small))
-            .clip(MaterialTheme.shapes.small),
-        contentScale = ContentScale.FillWidth,
-        painter = painterResource(heroImage),
-        contentDescription = null
-    )
-}
-
-
-
-
 @Preview("Light Theme")
 @Preview("Dark Theme", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
